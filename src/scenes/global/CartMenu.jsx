@@ -139,7 +139,7 @@ const CartMenu = () => {
             {/* Subtotal and Checkout Button */}
             <Box m="20px 0px">
               <FlexBox m="20px 0px">
-                <Typography fontWeight="bold">SUBTOTALl</Typography>
+                <Typography fontWeight="bold">SUBTOTAL</Typography>
                 <Typography fontWeight="bold">${totalPrice}</Typography>
               </FlexBox>
               <Button
