@@ -57,7 +57,7 @@ const Navbar = () => {
           </IconButton>
           <Badge
             badgeContent={`${cart.length}`}
-            invisible={cart.length < 0}
+            invisible={cart.length === 0}
             color="secondary"
             sx={{
               "& .MuiBadge-badge": {

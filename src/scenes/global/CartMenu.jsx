@@ -72,7 +72,7 @@ const CartMenu = () => {
                   <Box flex="1 1 40%">
                     {/* Image */}
                     <img
-                      src={`http://localhost:1337
+                      src={`${process.env.REACT_APP_BACKEND_URL}
                         ${item?.attributes?.image?.data?.attributes?.formats?.medium?.url}`}
                       height="164px"
                       width="123px"

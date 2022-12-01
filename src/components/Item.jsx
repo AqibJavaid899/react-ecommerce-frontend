@@ -42,7 +42,7 @@ const Item = ({ item, width }) => {
       >
         {/* Item Image */}
         <img
-          src={`http://localhost:1337${url}`}
+          src={`${process.env.REACT_APP_BACKEND_URL}${url}`}
           alt={name}
           height="400px"
           width="300px"
@@ -80,7 +80,13 @@ const Item = ({ item, width }) => {
             </Box>
             {/* Add To Cart Button */}
             <Button
-              sx={{ backgroundColor: shades.primary[300], color: "white" }}
+              sx={{
+                backgroundColor: shades.primary[300],
+                color: "white",
+                ":hover": {
+                  backgroundColor: shades.primary[200],
+                },
+              }}
               onClick={() => dispatch(addToCart({ item: { ...item, count } }))}
             >
               Add to Cart
