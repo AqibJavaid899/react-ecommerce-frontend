@@ -20,14 +20,20 @@ export const cartSlice = createSlice({
       state.cart = state.cart.filter((item) => item.id !== action.payload.id);
     },
     increaseItemCount: (state, action) => {
-      state.cart = state.cart.map((item) =>
-        item.id === action.payload.id ? item.count++ : item,
-      );
+      state.cart = state.cart.map((item) => {
+        if (item.id === action.payload.id) {
+          item.count++;
+        }
+        return item;
+      });
     },
     decreaseItemCount: (state, action) => {
-      state.cart = state.cart.map((item) =>
-        item.id === action.payload.id ? item.count-- : item,
-      );
+      state.cart = state.cart.map((item) => {
+        if (item.id === action.payload.id) {
+          item.count--;
+        }
+        return item;
+      });
     },
     setIsCartOpen: (state) => {
       state.isCartOpen = !state.isCartOpen;

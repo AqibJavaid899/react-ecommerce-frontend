@@ -27,7 +27,7 @@ const CartMenu = () => {
   const dispatch = useDispatch();
 
   const totalPrice = cart.reduce(
-    (total, item) => total + item.count * item.attributes.price,
+    (total, item) => total + item.count * item?.attributes.price,
     0,
   );
 
@@ -72,8 +72,7 @@ const CartMenu = () => {
                   <Box flex="1 1 40%">
                     {/* Image */}
                     <img
-                      src={`${process.env.REACT_APP_BACKEND_URL}
-                        ${item?.attributes?.image?.data?.attributes?.formats?.medium?.url}`}
+                      src={`${process.env.REACT_APP_BACKEND_URL}${item.attributes.image.data.attributes.formats.medium.url}`}
                       height="164px"
                       width="123px"
                       alt={item?.name}
@@ -97,10 +96,12 @@ const CartMenu = () => {
                     </FlexBox>
 
                     {/* Item Description */}
-                    <Typography>{item.attributes.description}</Typography>
+                    <Typography sx={{ pr: "8px" }}>
+                      {item?.attributes.shortDescription}
+                    </Typography>
 
                     {/* Increase/Decrease Buttons and Item Amount */}
-                    <FlexBox m="15px 0px">
+                    <FlexBox m="15px 0px" pr="8px">
                       <Box
                         display="flex"
                         alignItems="center"
@@ -108,6 +109,7 @@ const CartMenu = () => {
                       >
                         <IconButton
                           onClick={() =>
+                            item?.count > 0 &&
                             dispatch(decreaseItemCount({ id: item.id }))
                           }
                         >
@@ -125,7 +127,7 @@ const CartMenu = () => {
 
                       {/* Amount */}
                       <Typography fontWeight="bold">
-                        {item.attributes.price}
+                        ${item?.attributes?.price}
                       </Typography>
                     </FlexBox>
                   </Box>
