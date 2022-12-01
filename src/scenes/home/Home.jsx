@@ -1,6 +1,7 @@
 import React from "react";
 
 import MainCarousel from "./MainCarousel";
+import NewsletterSubscription from "./NewsletterSubscription";
 import ShoppingList from "./ShoppingList";
 
 const Home = () => {
@@ -8,6 +9,7 @@ const Home = () => {
     <div>
       <MainCarousel />
       <ShoppingList />
+      <NewsletterSubscription />
     </div>
   );
 };
