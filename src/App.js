@@ -8,7 +8,7 @@ import {
 
 import { Home } from "./scenes/home";
 import { Checkout, Confirmation } from "./scenes/checkout";
-import { CartMenu, Navbar } from "./scenes/global";
+import { CartMenu, Footer, Navbar } from "./scenes/global";
 import { ItemDetails } from "./scenes/itemDetails";
 
 const ScrollToTop = () => {
@@ -32,6 +32,7 @@ function App() {
           <Route path="checkout/success" element={<Confirmation />} />
         </Routes>
         <CartMenu />
+        <Footer />
       </Router>
     </div>
   );
