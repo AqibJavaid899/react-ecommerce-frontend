@@ -14,7 +14,13 @@ export const cartSlice = createSlice({
       state.items = action.payload;
     },
     addToCart: (state, action) => {
-      state.cart = [...state.cart, action.payload.item];
+      // Avoiding the case where the same items will be added to the Cart multiple times
+      const { length } = state.cart.filter(
+        (item) => item?.id === action.payload.item.id,
+      );
+      if (length === 0) {
+        state.cart = [...state.cart, action.payload.item];
+      }
     },
     removeFromCart: (state, action) => {
       state.cart = state.cart.filter((item) => item.id !== action.payload.id);

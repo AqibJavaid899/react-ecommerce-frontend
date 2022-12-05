@@ -60,7 +60,9 @@ const ItemDetails = () => {
   }, [itemId]);
 
   const relatedItems = items.filter(
-    (data) => data?.attributes?.category === item?.attributes?.category,
+    (data) =>
+      data?.attributes?.category === item?.attributes?.category &&
+      data?.id !== item?.id,
   );
 
   const handleTabChange = (event, newTabValue) => {
