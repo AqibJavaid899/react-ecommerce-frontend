@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router-dom";
-import { Box, Typography, IconButton, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  IconButton,
+  Button,
+  Tabs,
+  Tab,
+  useMediaQuery,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -10,11 +18,13 @@ import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutl
 
 import { addToCart } from "../../state/slices";
 import { shades } from "../../theme";
+import Item from "../../components/Item";
 
 const ItemDetails = () => {
   const [item, setItem] = useState({});
   const [items, setItems] = useState([]);
   const [count, setCount] = useState(1);
+  const [selectedTab, setSelectedTab] = useState("description");
 
   // Fetching the ItemId from the Params
   const { itemId } = useParams();
@@ -22,6 +32,8 @@ const ItemDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
+
+  const isNonMobile = useMediaQuery("(min-width: 600px)");
 
   useEffect(() => {
     // Function to get the data related to the Selected Item
@@ -51,6 +63,10 @@ const ItemDetails = () => {
     (data) => data?.attributes?.category === item?.attributes?.category,
   );
 
+  const handleTabChange = (event, newTabValue) => {
+    setSelectedTab(newTabValue);
+  };
+
   return (
     <Box width="80%" margin="80px auto">
       {/* Wrapper Container */}
@@ -68,7 +84,7 @@ const ItemDetails = () => {
 
         {/* Description and Buttons */}
         <Box flex="1 1 50%">
-          {/* Top Content */}
+          {/* Back and Checkout Navigation Buttons */}
           <Box
             display="flex"
             justifyContent="space-between"
@@ -85,7 +101,7 @@ const ItemDetails = () => {
           </Box>
 
           {/* Description and Add to Cart Button */}
-          <Box m="60px 0px 25px 10px">
+          <Box m={isNonMobile ? "60px 0px 25px 10px" : "40px 0px 25px 10px"}>
             <Typography variant="h3">{item?.attributes?.name}</Typography>
             <Typography fontWeight="bold" sx={{ mt: "8px" }}>
               ${item?.attributes?.price}
@@ -151,6 +167,46 @@ const ItemDetails = () => {
               </Typography>
             </Box>
           </Box>
+        </Box>
+      </Box>
+
+      {/* Description and Reviews Tabs  */}
+      <Box m={isNonMobile ? "20px 0" : "40px 0px"}>
+        <Tabs onChange={handleTabChange} value={selectedTab}>
+          <Tab label="DESCRIPTION" value="description" />
+          <Tab label="REVIEWS" value="reviews" />
+        </Tabs>
+      </Box>
+
+      {/* Content based on Selected Tabs */}
+      <Box display="flex" flexWrap="wrap" gap="15px">
+        {selectedTab === "description" && (
+          <Typography>{item?.attributes?.longDescription}</Typography>
+        )}
+        {selectedTab === "reviews" && <Typography>No Reviews.</Typography>}
+      </Box>
+
+      {/* Related Products */}
+      <Box mt="60px" width="100%">
+        <Typography
+          textAlign={!isNonMobile && "center"}
+          variant="h3"
+          fontWeight="bold"
+          color={shades.primary[300]}
+        >
+          RELATED PRODUCTS
+        </Typography>
+        <Box
+          m="20px auto"
+          display="grid"
+          gridTemplateColumns="repeat(auto-fill, 300px)"
+          rowGap="20px"
+          columnGap="1.33%"
+          justifyContent="space-around"
+        >
+          {relatedItems.slice(0, 4).map((item, itemIdx) => (
+            <Item key={`${itemIdx}-${itemIdx}`} item={item} />
+          ))}
         </Box>
       </Box>
     </Box>
