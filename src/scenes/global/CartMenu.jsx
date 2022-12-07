@@ -154,6 +154,11 @@ const CartMenu = () => {
                   borderRadius: 0,
                   padding: "20px 40px",
                   m: "20px 0px",
+                  "&:hover": {
+                    opacity: 0.9,
+                    backgroundColor: shades.primary[400],
+                    boxShadow: "none",
+                  },
                 }}
               >
                 CHECKOUT

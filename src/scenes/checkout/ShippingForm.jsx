@@ -14,7 +14,7 @@ const ShippingForm = ({
   return (
     <Box m="30px 0px">
       <Box>
-        <Typography sx={{ mb: "15px" }} variant="h3">
+        <Typography sx={{ mb: "20px" }} variant="h3">
           BILLING INFORMATION
         </Typography>
 
@@ -29,7 +29,7 @@ const ShippingForm = ({
         />
       </Box>
       {/* Same Address Checkbox */}
-      <Box mb="20px">
+      <Box mb="20px" mt="10px">
         <FormControlLabel
           label="Same for Shipping Address"
           control={
