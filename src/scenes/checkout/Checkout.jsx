@@ -10,10 +10,13 @@ import {
 } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { loadStripe } from "@stripe/stripe-js";
 
 import ShippingForm from "./ShippingForm";
 import ContactInfoForm from "./ContactInfoForm";
 import { shades } from "../../theme";
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 const Checkout = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -22,11 +25,38 @@ const Checkout = () => {
 
   const cart = useSelector((state) => state.cart.cart);
 
-  const proceedToPayment = (values) => {};
+  const proceedToStripeCheckout = async (values) => {
+    const stripe = await stripePromise;
+
+    // Request Body for POST Order API Call
+    const requestBody = {
+      userName: [
+        values.billingAddress.firstName,
+        values.billingAddress.lastName,
+      ].join(" "),
+      email: values.email,
+      products: cart.map(({ id, count }) => ({ id, count })),
+    };
+
+    // Calling the POST Order API Call
+    const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/api/orders`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody),
+      },
+    );
+
+    // Fetching the session object from the API response and calling the RedirectToCheckout method
+    const session = await response.json();
+    await stripe.redirectToCheckout({
+      sessionId: session.id,
+    });
+  };
 
   const handleFormSubmit = (values, actions) => {
     setActiveStep((prevState) => prevState + 1);
-    console.log("\n\nActions Object is : ", actions);
 
     // Copy the Billing Address Form data into the Shipping Address Form data
     if (isFirstStep && values.shippingAddress.isSameAddress) {
@@ -37,7 +67,7 @@ const Checkout = () => {
     }
     // Proceed to make payment when the (Place Order) button is clicked
     if (isSecondStep) {
-      proceedToPayment(values);
+      proceedToStripeCheckout(values);
     }
 
     actions.setTouched({});
